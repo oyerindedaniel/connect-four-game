@@ -1,5 +1,5 @@
 import type { Config } from "tailwindcss";
-import { fontFamily } from "tailwindcss/defaultTheme";
+import theme, { fontFamily } from "tailwindcss/defaultTheme";
 
 const config: Config = {
   content: [
@@ -9,10 +9,18 @@ const config: Config = {
   ],
   theme: {
     extend: {
-      colors: {
+      colors: ({ theme }) => ({
         background: "var(--background)",
         foreground: "var(--foreground)",
-      },
+        black: "hsl(var(--black))",
+        purple: {
+          light: "hsl(var(--purple-light))",
+          dark: "hsl(var(--purple-dark))",
+        },
+        pink: "hsl(var(--pink))",
+        yellow: "hsl(var(--yellow))",
+        white: "hsl(var(--white))",
+      }),
       fontFamily: {
         grotesk: ["var(--font-space-grotesk-sans)", ...fontFamily.sans],
       },

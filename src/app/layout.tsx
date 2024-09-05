@@ -4,6 +4,7 @@ import "./globals.css";
 
 import { SpaceGroteskSans } from "./font";
 import { classNames } from "@/utils/other";
+import Providers from "./providers";
 
 // const geistSans = localFont({
 //   src: "./fonts/GeistVF.woff",
@@ -35,7 +36,7 @@ export default function RootLayout({
         )}
         // className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        {children}
+        <Providers>{children}</Providers>
       </body>
     </html>
   );
