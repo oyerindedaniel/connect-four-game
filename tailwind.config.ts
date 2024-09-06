@@ -1,5 +1,5 @@
 import type { Config } from "tailwindcss";
-import theme, { fontFamily } from "tailwindcss/defaultTheme";
+import { fontFamily } from "tailwindcss/defaultTheme";
 
 const config: Config = {
   content: [
@@ -9,6 +9,10 @@ const config: Config = {
   ],
   theme: {
     extend: {
+      content: {
+        "board-layer-black-large": 'url("/images/board-layer-black-large.svg")',
+        "board-layer-white-large": 'url("/images/board-layer-white-large.svg")',
+      },
       colors: ({ theme }) => ({
         background: "var(--background)",
         foreground: "var(--foreground)",

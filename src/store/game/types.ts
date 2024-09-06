@@ -20,8 +20,11 @@ export type GameStateType = {
 };
 
 export interface GameContextType {
-  currentPlayerIndex: number;
-  switchTurn: () => void;
+  state: GameStateType;
   playerScores: number[];
   resetGame: () => void;
+  startGame: (mode: GameMode) => void;
+  nextTurn: () => void;
+  setWinner: (winner: Player) => void;
+  endGame: () => void;
 }

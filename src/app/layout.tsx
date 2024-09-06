@@ -32,7 +32,7 @@ export default function RootLayout({
       <body
         className={classNames(
           SpaceGroteskSans.variable,
-          "antialiased font-grotesk h-full"
+          "antialiased font-grotesk relative h-[150vh]"
         )}
         // className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >

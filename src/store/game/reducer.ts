@@ -1,6 +1,7 @@
 import { LOCAL_STORAGE_NAME } from "@/config";
 import { isWindowDefined } from "@/utils/other";
 import { GameAction, GameActions } from "./actions";
+import { defaultInitialState } from "./constants";
 import { GameMode, GameState, GameStateType } from "./types";
 
 export function getInitialState(): GameStateType {
@@ -11,12 +12,7 @@ export function getInitialState(): GameStateType {
     }
   }
 
-  return {
-    gameMode: null,
-    currentPlayer: "player1",
-    lastWinner: null,
-    gameStatus: GameState.NotStarted,
-  };
+  return defaultInitialState;
 }
 
 export const gameReducer = (

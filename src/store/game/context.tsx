@@ -4,6 +4,7 @@ import React, {
   createContext,
   PropsWithChildren,
   useContext,
+  useMemo,
   useReducer,
   useState,
 } from "react";
@@ -26,19 +27,15 @@ interface GameProviderProps extends PropsWithChildren {}
 
 export const GameProvider: React.FC<GameProviderProps> = ({ children }) => {
   const [state, dispatch] = useReducer(gameReducer, undefined, getInitialState);
-  const [currentPlayerIndex, setCurrentPlayerIndex] = useState<number>(0);
   const [playerScores, setPlayerScores] = useState<number[]>([0, 0]);
 
-  const switchTurn = () => {
-    setCurrentPlayerIndex((prevIndex) => (prevIndex + 1) % playerScores.length);
-  };
+  const resetGame = useMemo(() => {
+    return () => {
+      setPlayerScores([0, 0]);
+    };
+  }, []);
 
-  const resetGame = () => {
-    setPlayerScores([0, 0]);
-    setCurrentPlayerIndex(0);
-  };
-
-  const useGameActions = () => {
+  const useGameActions = useMemo(() => {
     const startGame = (mode: GameMode) => {
       dispatch({ type: GameAction.StartGame, payload: mode });
     };
@@ -56,13 +53,19 @@ export const GameProvider: React.FC<GameProviderProps> = ({ children }) => {
     };
 
     return { startGame, nextTurn, setWinner, endGame };
-  };
+  }, [dispatch]);
+
+  const contextValue = useMemo(
+    () => ({
+      state,
+      resetGame,
+      playerScores,
+      ...useGameActions,
+    }),
+    [state, resetGame, playerScores, useGameActions]
+  );
 
   return (
-    <GameContext.Provider
-      value={{ currentPlayerIndex, switchTurn, playerScores, resetGame }}
-    >
-      {children}
-    </GameContext.Provider>
+    <GameContext.Provider value={contextValue}>{children}</GameContext.Provider>
   );
 };

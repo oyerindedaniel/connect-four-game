@@ -10,7 +10,7 @@ import { ReactComponent as CPUSVG } from "./cpu.svg";
 import { ReactComponent as MarkerRedSVG } from "./marker-red.svg";
 import { ReactComponent as MarkerYellowSVG } from "./marker-yellow.svg";
 import { ReactComponent as LogoSVG } from "./logo.svg";
-import { ReactComponent as PlayerOne } from "./player-one.svg";
+import { ReactComponent as PlayerOneSVG } from "./player-one.svg";
 import { ReactComponent as PlayerTwoSVG } from "./player-two.svg";
 import { ReactComponent as PlayerVsCPUSVG } from "./player-vs-cpu.svg";
 import { ReactComponent as PlayerVsPlayerSVG } from "./player-vs-player.svg";
@@ -31,7 +31,7 @@ export {
   MarkerRedSVG,
   MarkerYellowSVG,
   LogoSVG,
-  PlayerOne,
+  PlayerOneSVG,
   PlayerTwoSVG,
   PlayerVsCPUSVG,
   PlayerVsPlayerSVG,

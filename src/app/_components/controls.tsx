@@ -1,7 +1,7 @@
 "use client";
 
 const Controls: React.FC = () => {
-  return <div className="">ddd</div>;
+  return <div className=""></div>;
 };
 
 export default Controls;
