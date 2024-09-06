@@ -2,20 +2,17 @@
 
 import React, {
   createContext,
-  useState,
-  useContext,
-  ReactNode,
   PropsWithChildren,
+  useContext,
+  useReducer,
+  useState,
 } from "react";
+import { GameAction } from "./actions";
+import { defaultGameContext } from "./constants";
+import { gameReducer, getInitialState } from "./reducer";
+import { GameContextType, GameMode, Player } from "./types";
 
-interface GameContextType {
-  currentPlayerIndex: number;
-  switchTurn: () => void;
-  playerScores: number[];
-  resetGame: () => void;
-}
-
-const GameContext = createContext<GameContextType | undefined>(undefined);
+const GameContext = createContext<GameContextType>(defaultGameContext);
 
 export const useGameContext = (): GameContextType => {
   const context = useContext(GameContext);
@@ -25,9 +22,10 @@ export const useGameContext = (): GameContextType => {
   return context;
 };
 
-interface GameProviderProps extends PropsWithChildren<{}> {}
+interface GameProviderProps extends PropsWithChildren {}
 
 export const GameProvider: React.FC<GameProviderProps> = ({ children }) => {
+  const [state, dispatch] = useReducer(gameReducer, undefined, getInitialState);
   const [currentPlayerIndex, setCurrentPlayerIndex] = useState<number>(0);
   const [playerScores, setPlayerScores] = useState<number[]>([0, 0]);
 
@@ -38,6 +36,26 @@ export const GameProvider: React.FC<GameProviderProps> = ({ children }) => {
   const resetGame = () => {
     setPlayerScores([0, 0]);
     setCurrentPlayerIndex(0);
+  };
+
+  const useGameActions = () => {
+    const startGame = (mode: GameMode) => {
+      dispatch({ type: GameAction.StartGame, payload: mode });
+    };
+
+    const nextTurn = () => {
+      dispatch({ type: GameAction.NextTurn });
+    };
+
+    const setWinner = (winner: Player) => {
+      dispatch({ type: GameAction.SetWinner, payload: winner });
+    };
+
+    const endGame = () => {
+      dispatch({ type: GameAction.EndGame });
+    };
+
+    return { startGame, nextTurn, setWinner, endGame };
   };
 
   return (

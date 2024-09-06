@@ -10,9 +10,9 @@ const ConnectFour: React.FC = () => {
   const { currentPlayerIndex, playerScores, switchTurn } = useGameContext();
 
   return (
-    <div>
+    <div className="flex flex-col">
       <Controls />
-      <div>
+      <div className="">
         <PlayerInfo playerName="Player 1" score={playerScores[0]} />
 
         <GameBoard />
@@ -21,7 +21,7 @@ const ConnectFour: React.FC = () => {
       </div>
       <Timer timeLeft={3} />
 
-      <button onClick={switchTurn}>End Turn</button>
+      {/* <button onClick={switchTurn}>End Turn</button> */}
     </div>
   );
 };
