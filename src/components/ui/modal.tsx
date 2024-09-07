@@ -41,10 +41,3 @@ const Modal = forwardRef<HTMLDivElement, ModalProps>(
 Modal.displayName = "Modal";
 
 export default Modal;
-
-// <Dialog open={isOpen} onOpenChange={onOpenChange}>
-//   <Dialog.Overlay className="fixed inset-0 bg-black bg-opacity-50" />
-//   <Dialog.Content ref={ref} className={panelClasses}>
-//     {children}
-//   </Dialog.Content>
-// </Dialog>;
