@@ -1,4 +1,6 @@
-import { CPUSVG, PlayerOneSVG, PlayerTwoSVG } from "@/assets"; // Assuming you have assets for each player
+"use client";
+
+import { CPUSVG, PlayerOneSVG, PlayerTwoSVG } from "@/assets";
 import { Player } from "@/store/game/types";
 import { classNames } from "@/utils/other";
 

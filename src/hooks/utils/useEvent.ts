@@ -2,6 +2,7 @@ import { useCallback, useRef } from "react";
 
 import { useIsomorphicLayoutEffect } from "./useIsomorphicLayoutEffect";
 
+// eslint-disable-next-line @typescript-eslint/ban-types
 export function useEvent<T extends Function>(handler: T | undefined) {
   const handlerRef = useRef<T | undefined>(handler);
 

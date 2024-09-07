@@ -1,3 +1,4 @@
+export { useDisclosure } from "./useDisclosure";
 export { useEvent } from "./useEvent";
 export { useIsomorphicLayoutEffect } from "./useIsomorphicLayoutEffect";
 export { useLatestValue } from "./useLatestValue";

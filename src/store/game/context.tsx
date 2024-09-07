@@ -3,6 +3,7 @@
 import React, {
   createContext,
   PropsWithChildren,
+  useCallback,
   useContext,
   useMemo,
   useReducer,
@@ -29,11 +30,9 @@ export const GameProvider: React.FC<GameProviderProps> = ({ children }) => {
   const [state, dispatch] = useReducer(gameReducer, undefined, getInitialState);
   const [playerScores, setPlayerScores] = useState<number[]>([0, 0]);
 
-  const resetGame = useMemo(() => {
-    return () => {
-      setPlayerScores([0, 0]);
-    };
-  }, []);
+  const resetGame = useCallback(() => {
+    setPlayerScores([0, 0]);
+  }, [setPlayerScores]);
 
   const useGameActions = useMemo(() => {
     const startGame = (mode: GameMode) => {
