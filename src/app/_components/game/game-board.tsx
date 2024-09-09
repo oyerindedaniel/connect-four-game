@@ -2,7 +2,8 @@
 
 import { BoardLayerWhiteLargeSVG } from "@/assets";
 import SvgWrapper from "@/components/svg-wrapper";
-import { useNodeRef, useUniqueId } from "@/hooks/utils";
+import { DEFAULT_COLUMNS } from "@/config";
+import { useNodeRef } from "@/hooks/utils";
 import { useCallback, useState } from "react";
 import GameDroppable from "./game-droppable";
 
@@ -22,9 +23,10 @@ const GameBoard: React.FC = () => {
 
   const [node, setNodeRef] = useNodeRef(handleNodeChange);
 
-  const uniqueId = useUniqueId(`droppable`);
-
-  const droppableIds = Array.from({ length: 5 }, () => uniqueId);
+  const droppableIds = Array.from(
+    { length: DEFAULT_COLUMNS },
+    (_, index) => `droppable-${index}`
+  );
 
   return (
     <div className="">
@@ -34,7 +36,7 @@ const GameBoard: React.FC = () => {
       >
         <div ref={setNodeRef} className="relative">
           {boardRect && (
-            <div className="flex w-full absolute top-0">
+            <div className="flex w-full absolute -top-[90.28px]">
               {droppableIds.map((id) => (
                 <GameDroppable key={id} id={id} />
               ))}

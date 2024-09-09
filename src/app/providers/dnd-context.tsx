@@ -1,8 +1,15 @@
 "use client";
 
-import { PropsWithChildren } from "react";
 import { DndContext } from "@dnd-kit/core";
+import { PropsWithChildren, useState } from "react";
 
 export default function Providers({ children }: PropsWithChildren) {
-  return <DndContext>{children}</DndContext>;
+  const [parent, setParent] = useState();
+
+  function handleDragEnd({ over }) {
+    console.log("here");
+    setParent(over ? over.id : null);
+  }
+  console.log(parent);
+  return <DndContext onDragEnd={handleDragEnd}>{children}</DndContext>;
 }
