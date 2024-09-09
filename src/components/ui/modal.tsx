@@ -24,7 +24,7 @@ const Modal = forwardRef<HTMLDivElement, ModalProps>(
         <div className="fixed inset-0 flex w-screen items-center justify-center p-4 text-black bg-transparent">
           <DialogPanel
             className={classNames(
-              "max-w-lg space-y-4 bg-purple-dark p-12 border-[3px] w-[480px] h-[537px] rounded-[40px] border-black shadow-[0_10px_0_rgba(0,0,0,1)]",
+              "space-y-4 bg-purple-dark p-12 border-[3px] w-full max-w-[480px] h-[537px] rounded-[40px] border-black shadow-[0_10px_0_rgba(0,0,0,1)]",
               className
             )}
           >

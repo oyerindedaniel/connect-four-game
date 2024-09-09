@@ -31,16 +31,7 @@ export const gameReducer = (
     case GameAction.NextTurn:
       return {
         ...state,
-        currentPlayer: (() => {
-          if (state.gameMode === GameMode.Local) {
-            return state.currentPlayer === "player1" ? "player2" : "player1";
-          } else if (state.gameMode === GameMode.Computer) {
-            return state.currentPlayer === "player1" ? "computer" : "player1";
-          } else if (state.gameMode === GameMode.Socket) {
-            return state.currentPlayer === "player1" ? "player2" : "player1";
-          }
-          return state.currentPlayer;
-        })(),
+        currentPlayer: action.payload,
       };
 
     case GameAction.SetWinner:

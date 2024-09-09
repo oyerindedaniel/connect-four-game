@@ -1,24 +1,20 @@
-import { useRef, useCallback } from "react";
-
+import { useCallback, useRef } from "react";
 import { useEvent } from "./useEvent";
 
-export function useNodeRef(
-  onChange?: (
-    newElement: HTMLElement | null,
-    previousElement: HTMLElement | null
-  ) => void
+export function useNodeRef<T extends Element = HTMLElement>(
+  onChange?: (newElement: T | null, previousElement: T | null) => void
 ) {
   const onChangeHandler = useEvent(onChange);
-  const node = useRef<HTMLElement | null>(null);
+  const node = useRef<T | null>(null);
+
   const setNodeRef = useCallback(
-    (element: HTMLElement | null) => {
+    (element: T | null) => {
       if (element !== node.current) {
         onChangeHandler?.(element, node.current);
       }
-
       node.current = element;
     },
-    //eslint-disable-next-line
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     []
   );
 

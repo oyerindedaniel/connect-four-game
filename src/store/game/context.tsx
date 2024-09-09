@@ -1,5 +1,7 @@
 "use client";
 
+import Connect4Game, { IConnect4Game } from "@/constructor/game";
+import { getPlayerMap } from "@/utils/game";
 import React, {
   createContext,
   PropsWithChildren,
@@ -29,18 +31,15 @@ interface GameProviderProps extends PropsWithChildren {}
 export const GameProvider: React.FC<GameProviderProps> = ({ children }) => {
   const [state, dispatch] = useReducer(gameReducer, undefined, getInitialState);
   const [playerScores, setPlayerScores] = useState<number[]>([0, 0]);
+  const [gameInstance, setGameInstance] = useState<IConnect4Game | null>(null);
 
   const resetGame = useCallback(() => {
     setPlayerScores([0, 0]);
   }, [setPlayerScores]);
 
   const useGameActions = useMemo(() => {
-    const startGame = (mode: GameMode) => {
-      dispatch({ type: GameAction.StartGame, payload: mode });
-    };
-
-    const nextTurn = () => {
-      dispatch({ type: GameAction.NextTurn });
+    const nextTurn = (nextPlayer: Player) => {
+      dispatch({ type: GameAction.NextTurn, payload: nextPlayer });
     };
 
     const setWinner = (winner: Player) => {
@@ -49,6 +48,31 @@ export const GameProvider: React.FC<GameProviderProps> = ({ children }) => {
 
     const endGame = () => {
       dispatch({ type: GameAction.EndGame });
+    };
+
+    const startGame = (mode: GameMode) => {
+      const playerMap = getPlayerMap(mode);
+
+      const game = new Connect4Game(
+        {
+          currentPlayer: 1,
+          playerMap,
+        },
+        {
+          nextTurnCallback: (nextPlayer) => {
+            nextTurn(nextPlayer);
+          },
+          setWinnerCallback: (winner) => {
+            console.log(`${winner} is the winner`);
+          },
+          endGameCallback: () => {
+            console.log("The game is over. It's a draw");
+          },
+        }
+      );
+
+      setGameInstance(game);
+      dispatch({ type: GameAction.StartGame, payload: mode });
     };
 
     return { startGame, nextTurn, setWinner, endGame };

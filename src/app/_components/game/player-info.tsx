@@ -1,20 +1,14 @@
 "use client";
 
-import { CPUSVG, PlayerOneSVG, PlayerTwoSVG } from "@/assets";
 import { Player } from "@/store/game/types";
 import { classNames } from "@/utils/other";
+import PlayerAsset from "./player-asset";
 
 interface PlayerInfoProps {
   className?: HTMLDivElement["className"];
   player: Player;
   score: number;
 }
-
-const playerAssets = {
-  player1: <PlayerOneSVG />,
-  player2: <PlayerTwoSVG />,
-  computer: <CPUSVG />,
-};
 
 const playerNames = {
   player1: "Player 1",
@@ -34,9 +28,7 @@ const PlayerInfo: React.FC<PlayerInfoProps> = ({
         className
       )}
     >
-      <span className="absolute top-0 -translate-y-2/4 left-2/4 -translate-x-2/4">
-        {playerAssets[player]}
-      </span>
+      <PlayerAsset player={player} />
       <div className="flex flex-col justify-center items-center absolute top-[46px] w-max left-2/4 -translate-x-2/4">
         <span className="text-xl uppercase font-bold">
           {playerNames[player]}

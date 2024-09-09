@@ -1,3 +1,5 @@
+import { CallbackOptions } from "@/constructor/game";
+
 export enum GameState {
   NotStarted = "NotStarted",
   InProgress = "InProgress",
@@ -24,7 +26,7 @@ export interface GameContextType {
   playerScores: number[];
   resetGame: () => void;
   startGame: (mode: GameMode) => void;
-  nextTurn: () => void;
-  setWinner: (winner: Player) => void;
-  endGame: () => void;
+  nextTurn: CallbackOptions["nextTurnCallback"];
+  setWinner: CallbackOptions["setWinnerCallback"];
+  endGame: CallbackOptions["endGameCallback"];
 }
