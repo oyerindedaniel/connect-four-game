@@ -1,7 +1,9 @@
 "use client";
 
 import { CPUSVG, PlayerOneSVG, PlayerTwoSVG } from "@/assets";
+import { DragAction } from "@/store/drag/actions";
 import { useDragContext } from "@/store/drag/context";
+import { useGameContext } from "@/store/game/context";
 import { Player } from "@/store/game/types";
 import { useDraggable } from "@dnd-kit/core";
 import { CSS } from "@dnd-kit/utilities";
@@ -22,14 +24,26 @@ const PlayerAsset: React.FC<PlayerInfoProps> = ({ player }) => {
   });
 
   const {
-    state: { over },
+    state: { currentPlayer },
+  } = useGameContext();
+
+  const {
+    state: { over, lastAction, active },
   } = useDragContext();
 
   const style = {
     transform: CSS.Translate.toString(transform),
   };
 
-  return !over ? (
+  const isDropped = Boolean(
+    over && lastAction === DragAction.DragEnd && player === currentPlayer
+  );
+
+  console.log({ isDropped });
+
+  if (isDropped) return null;
+
+  return (
     <span
       className="absolute top-0 -translate-y-2/4 left-2/4 -translate-x-2/4 z-50"
       ref={setNodeRef}
@@ -39,7 +53,7 @@ const PlayerAsset: React.FC<PlayerInfoProps> = ({ player }) => {
     >
       {playerAssets[player]}
     </span>
-  ) : null;
+  );
 };
 
 export default PlayerAsset;

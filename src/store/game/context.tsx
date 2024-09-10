@@ -5,7 +5,6 @@ import { getPlayerMap } from "@/utils/game";
 import React, {
   createContext,
   PropsWithChildren,
-  useCallback,
   useContext,
   useMemo,
   useReducer,
@@ -30,12 +29,9 @@ interface GameProviderProps extends PropsWithChildren {}
 
 export const GameProvider: React.FC<GameProviderProps> = ({ children }) => {
   const [state, dispatch] = useReducer(gameReducer, undefined, getInitialState);
-  const [playerScores, setPlayerScores] = useState<number[]>([0, 0]);
   const [gameInstance, setGameInstance] = useState<IConnect4Game | null>(null);
 
-  const resetGame = useCallback(() => {
-    setPlayerScores([0, 0]);
-  }, [setPlayerScores]);
+  // setPlayerScores([0, 0]);
 
   const useGameActions = useMemo(() => {
     const nextTurn = (nextPlayer: Player) => {
@@ -48,6 +44,18 @@ export const GameProvider: React.FC<GameProviderProps> = ({ children }) => {
 
     const endGame = () => {
       dispatch({ type: GameAction.EndGame });
+    };
+
+    const restartGame = () => {
+      dispatch({ type: GameAction.RestartGame });
+    };
+
+    const pauseGame = () => {
+      dispatch({ type: GameAction.PauseGame });
+    };
+
+    const continueGame = () => {
+      dispatch({ type: GameAction.RestartGame });
     };
 
     const startGame = (mode: GameMode) => {
@@ -75,17 +83,23 @@ export const GameProvider: React.FC<GameProviderProps> = ({ children }) => {
       dispatch({ type: GameAction.StartGame, payload: mode });
     };
 
-    return { startGame, nextTurn, setWinner, endGame };
+    return {
+      startGame,
+      nextTurn,
+      setWinner,
+      endGame,
+      restartGame,
+      pauseGame,
+      continueGame,
+    };
   }, [dispatch]);
 
   const contextValue = useMemo(
     () => ({
       state,
-      resetGame,
-      playerScores,
       ...useGameActions,
     }),
-    [state, resetGame, playerScores, useGameActions]
+    [state, useGameActions]
   );
 
   return (

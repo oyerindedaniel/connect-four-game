@@ -7,10 +7,10 @@ import DndContextProvider from "./dnd-context";
 
 export default function Providers({ children }: PropsWithChildren) {
   return (
-    <DndContextProvider>
-      <GameProvider>
-        <DragProvider>{children}</DragProvider>
-      </GameProvider>
-    </DndContextProvider>
+    <DragProvider>
+      <DndContextProvider>
+        <GameProvider>{children}</GameProvider>
+      </DndContextProvider>
+    </DragProvider>
   );
 }

@@ -5,12 +5,12 @@ export const defaultInitialState: GameStateType = {
   gameMode: null,
   currentPlayer: "player1",
   lastWinner: null,
+  playerScores: [0, 0],
   gameStatus: GameState.NotStarted,
 };
 
 export const defaultGameContext: GameContextType = {
   state: defaultInitialState,
-  playerScores: [0, 0],
   resetGame: noop,
   startGame: noop,
   nextTurn: noop,

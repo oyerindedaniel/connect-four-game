@@ -23,18 +23,22 @@ const GameDroppable: React.FC<GameDroppableProps> = ({ id }) => {
   });
 
   const style = {
-    opacity: isOver ? 1 : 0.5,
+    // opacity: isOver ? 0.6 : 0.5,
   };
 
   const isDropped = over?.id === id && !isDragging;
 
   return (
     <div
-      className="bg-red-600 aspect-square w-full h-full"
+      className="aspect-square w-full h-full relative"
       ref={setNodeRef}
       style={style}
     >
-      {isDropped ? playerAssets[currentPlayer] : null}
+      {isDropped && (
+        <span className="absolute left-2/4 -translate-x-2/4 bottom-0">
+          {playerAssets[currentPlayer]}
+        </span>
+      )}
     </div>
   );
 };

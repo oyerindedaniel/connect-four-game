@@ -7,6 +7,7 @@ export interface DragState {
   collisions: DragMoveEvent["collisions"] | null;
   delta: DragMoveEvent["delta"] | { x: 0; y: 0 };
   isDragging: boolean;
+  lastAction: DragAction | null;
 }
 
 export const initialDragState: DragState = {
@@ -15,6 +16,7 @@ export const initialDragState: DragState = {
   collisions: null,
   delta: { x: 0, y: 0 },
   isDragging: false,
+  lastAction: null,
 };
 
 export const dragReducer = (
@@ -27,6 +29,7 @@ export const dragReducer = (
         ...state,
         active: action.payload.active,
         isDragging: true,
+        lastAction: DragAction.DragStart,
       };
 
     case DragAction.DragMove:
@@ -34,6 +37,7 @@ export const dragReducer = (
         ...state,
         delta: action.payload.delta,
         collisions: action.payload.collisions,
+        lastAction: DragAction.DragMove,
       };
 
     case DragAction.DragOver:
@@ -42,6 +46,7 @@ export const dragReducer = (
         over: action.payload.over,
         collisions: action.payload.collisions,
         delta: action.payload.delta,
+        lastAction: DragAction.DragOver,
       };
 
     case DragAction.DragEnd:
@@ -52,6 +57,7 @@ export const dragReducer = (
         isDragging: false,
         collisions: action.payload.collisions,
         delta: { x: 0, y: 0 },
+        lastAction: DragAction.DragEnd,
       };
 
     case DragAction.DragCancel:
@@ -62,6 +68,7 @@ export const dragReducer = (
         isDragging: false,
         collisions: null,
         delta: { x: 0, y: 0 },
+        lastAction: DragAction.DragCancel,
       };
 
     default:

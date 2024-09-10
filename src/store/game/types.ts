@@ -4,6 +4,7 @@ export enum GameState {
   NotStarted = "NotStarted",
   InProgress = "InProgress",
   GameOver = "GameOver",
+  Paused = "Paused",
 }
 
 export enum GameMode {
@@ -17,16 +18,18 @@ export type Player = "player1" | "player2" | "computer";
 export type GameStateType = {
   gameMode: GameMode | null;
   currentPlayer: Player;
+  playerScores: number[];
   lastWinner: Player | null;
   gameStatus: GameState;
 };
 
 export interface GameContextType {
   state: GameStateType;
-  playerScores: number[];
-  resetGame: () => void;
   startGame: (mode: GameMode) => void;
   nextTurn: CallbackOptions["nextTurnCallback"];
   setWinner: CallbackOptions["setWinnerCallback"];
+  restartGame: () => void;
+  pauseGame: () => void;
+  continueGame: () => void;
   endGame: CallbackOptions["endGameCallback"];
 }

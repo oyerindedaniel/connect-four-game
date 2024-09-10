@@ -32,8 +32,6 @@ export const useDragContext = (): DragContextType => {
 export const DragProvider: React.FC<PropsWithChildren> = ({ children }) => {
   const [state, dispatch] = useReducer(dragReducer, initialDragState);
 
-  console.log(state);
-
   const value = useMemo(() => ({ state, dispatch }), [state, dispatch]);
 
   return <DragContext.Provider value={value}>{children}</DragContext.Provider>;

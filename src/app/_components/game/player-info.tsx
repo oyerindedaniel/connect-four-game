@@ -24,7 +24,7 @@ const PlayerInfo: React.FC<PlayerInfoProps> = ({
   return (
     <div
       className={classNames(
-        "top-2/4 -translate-y-2/4 shadow-[0_10px_0_rgba(0,0,0,1)] text-center w-[141px] h-[160px] rounded-[20px] text-black bg-white border-[3px] border-black",
+        "absolute top-2/4 -translate-y-2/4 shadow-[0_10px_0_rgba(0,0,0,1)] text-center w-[141px] h-[160px] rounded-[20px] text-black bg-white border-[3px] border-black",
         className
       )}
     >

@@ -1,6 +1,5 @@
 "use client";
 
-import { useDragContext } from "@/store/drag/context";
 import { useGameContext } from "@/store/game/context";
 import Controls from "./controls";
 import GameBoard from "./game-board";
@@ -9,13 +8,8 @@ import Timer from "./timer";
 
 const Game: React.FC = () => {
   const {
-    state: { currentPlayer },
-    playerScores,
+    state: { currentPlayer, playerScores },
   } = useGameContext();
-
-  const { state } = useDragContext();
-
-  console.log(state);
 
   return (
     <div className="flex flex-col h-full">
