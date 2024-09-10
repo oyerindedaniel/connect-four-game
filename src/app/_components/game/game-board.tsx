@@ -12,6 +12,10 @@ const GameBoard: React.FC = () => {
 
   const handleNodeChange = useCallback(
     (newElement: HTMLElement | null, previousElement: HTMLElement | null) => {
+      if (previousElement) {
+        setBoardRect(null);
+      }
+
       if (newElement) {
         const rect = newElement.getBoundingClientRect();
         console.log(rect);
