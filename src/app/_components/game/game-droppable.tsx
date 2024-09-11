@@ -1,42 +1,46 @@
 "use client";
 
 import { useDragContext } from "@/store/drag/context";
-import { useGameContext } from "@/store/game/context";
+import { Player } from "@/store/game/types";
 import { useDroppable } from "@dnd-kit/core";
-import { playerAssets } from "./player-asset";
+import { playerDiscs } from "./disc";
 
 interface GameDroppableProps {
-  id: string;
+  id: number;
 }
 
 const GameDroppable: React.FC<GameDroppableProps> = ({ id }) => {
   const {
-    state: { currentPlayer },
-  } = useGameContext();
-
-  const {
-    state: { over, isDragging },
+    state: {
+      currentDrag: { over, isDragging, active },
+      drags,
+    },
   } = useDragContext();
 
-  const { isOver, setNodeRef } = useDroppable({
-    id,
+  const { setNodeRef } = useDroppable({
+    id: `droppable-${id}`,
+    data: { id, columnIdx: id - 1 },
   });
 
-  const style = {
-    // opacity: isOver ? 0.6 : 0.5,
-  };
+  const droppedDiscData = drags.get(`droppable-${id}`);
 
-  const isDropped = over?.id === id && !isDragging;
+  const isOverCurrentDroppable = over?.id === `droppable-${id}`;
+  const isDragFinished = !isDragging;
+
+  const isDropped = isOverCurrentDroppable && isDragFinished;
+
+  const droppedPlayer = droppedDiscData?.active?.data?.current?.player;
 
   return (
-    <div
-      className="aspect-square w-full h-full relative"
-      ref={setNodeRef}
-      style={style}
-    >
-      {isDropped && (
+    <div className="aspect-square w-full h-full relative" ref={setNodeRef}>
+      {(isDropped || droppedPlayer) && (
         <span className="absolute left-2/4 -translate-x-2/4 bottom-0">
-          {playerAssets[currentPlayer]}
+          {
+            playerDiscs[
+              (droppedPlayer as Player) ??
+                (active!.data?.current?.player as Player)
+            ]
+          }
         </span>
       )}
     </div>

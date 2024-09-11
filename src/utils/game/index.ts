@@ -1,5 +1,5 @@
-import { GameMode } from "@/store/game/types";
 import { PlayerMap } from "@/constructor/game";
+import { GameMode } from "@/store/game/types";
 
 export function getPlayerMap(mode: GameMode): PlayerMap {
   switch (mode) {
@@ -12,4 +12,9 @@ export function getPlayerMap(mode: GameMode): PlayerMap {
     default:
       return { 1: "player1", 2: "player2" };
   }
+}
+
+export function getMaxDiscsPerPlayer(columns: number, rows: number): number {
+  const totalCells = columns * rows;
+  return Math.floor(totalCells / 2);
 }

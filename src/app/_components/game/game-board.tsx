@@ -18,7 +18,7 @@ const GameBoard: React.FC = () => {
 
       if (newElement) {
         const rect = newElement.getBoundingClientRect();
-        console.log(rect);
+        // console.log(rect);
         setBoardRect(rect);
       }
     },
@@ -27,9 +27,10 @@ const GameBoard: React.FC = () => {
 
   const [node, setNodeRef] = useNodeRef(handleNodeChange);
 
+  // Ids represent the board column number 1,2,3...
   const droppableIds = Array.from(
     { length: DEFAULT_COLUMNS },
-    (_, index) => `droppable-${index}`
+    (_, index) => index + 1
   );
 
   return (

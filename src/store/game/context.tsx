@@ -31,8 +31,6 @@ export const GameProvider: React.FC<GameProviderProps> = ({ children }) => {
   const [state, dispatch] = useReducer(gameReducer, undefined, getInitialState);
   const [gameInstance, setGameInstance] = useState<IConnect4Game | null>(null);
 
-  // setPlayerScores([0, 0]);
-
   const useGameActions = useMemo(() => {
     const nextTurn = (nextPlayer: Player) => {
       dispatch({ type: GameAction.NextTurn, payload: nextPlayer });
@@ -56,6 +54,13 @@ export const GameProvider: React.FC<GameProviderProps> = ({ children }) => {
 
     const continueGame = () => {
       dispatch({ type: GameAction.RestartGame });
+    };
+
+    const onDropDisc = (column: number) => {
+      if (gameInstance) {
+        return gameInstance.dropDisc(column);
+      }
+      return false;
     };
 
     const startGame = (mode: GameMode) => {
@@ -87,12 +92,13 @@ export const GameProvider: React.FC<GameProviderProps> = ({ children }) => {
       startGame,
       nextTurn,
       setWinner,
+      onDropDisc,
       endGame,
       restartGame,
       pauseGame,
       continueGame,
     };
-  }, [dispatch]);
+  }, [gameInstance, dispatch]);
 
   const contextValue = useMemo(
     () => ({

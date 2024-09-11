@@ -46,6 +46,7 @@ export const gameReducer = (
         ...state,
         gameMode: state.gameMode,
         currentPlayer: "player1",
+        playerScores: [0, 0],
         gameStatus: GameState.InProgress,
       };
 

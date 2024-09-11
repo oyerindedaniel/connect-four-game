@@ -2,6 +2,7 @@
 
 import { useGameContext } from "@/store/game/context";
 import Controls from "./controls";
+import Discs from "./discs";
 import GameBoard from "./game-board";
 import PlayerInfo from "./player-info";
 import Timer from "./timer";
@@ -21,7 +22,11 @@ const Game: React.FC = () => {
           className="left-[10%]"
         />
 
+        <Discs player="player1" className="left-[10%] top-[20%]" />
+
         <GameBoard />
+
+        <Discs player="player2" className="right-[10%] top-[20%]" />
 
         <PlayerInfo
           player="player2"

@@ -79,6 +79,8 @@ class Connect4Game implements IConnect4Game {
         const win = this.checkForWin();
         const boardFull = this.isBoardFull();
 
+        console.log({ win, boardFull });
+
         if (win) {
           this.setWinnerCallback(this.playerMap[this.currentPlayer as 1 | 2]);
           return true;

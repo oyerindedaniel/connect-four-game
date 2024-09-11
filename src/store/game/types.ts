@@ -1,4 +1,4 @@
-import { CallbackOptions } from "@/constructor/game";
+import { CallbackOptions, IConnect4Game } from "@/constructor/game";
 
 export enum GameState {
   NotStarted = "NotStarted",
@@ -29,6 +29,7 @@ export interface GameContextType {
   nextTurn: CallbackOptions["nextTurnCallback"];
   setWinner: CallbackOptions["setWinnerCallback"];
   restartGame: () => void;
+  onDropDisc: IConnect4Game["dropDisc"];
   pauseGame: () => void;
   continueGame: () => void;
   endGame: CallbackOptions["endGameCallback"];
