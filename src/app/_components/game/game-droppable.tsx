@@ -29,18 +29,18 @@ const GameDroppable: React.FC<GameDroppableProps> = ({ id }) => {
 
   const isDropped = isOverCurrentDroppable && isDragFinished;
 
-  const droppedPlayer = droppedDiscData?.active?.data?.current?.player;
+  const renderDisc = () => {
+    const droppedPlayer = droppedDiscData?.active?.data?.current?.player;
+    return playerDiscs[
+      (droppedPlayer as Player) ?? (active?.data?.current?.player as Player)
+    ];
+  };
 
   return (
     <div className="aspect-square w-full h-full relative" ref={setNodeRef}>
-      {(isDropped || droppedPlayer) && (
+      {(isDropped || droppedDiscData) && (
         <span className="absolute left-2/4 -translate-x-2/4 bottom-0">
-          {
-            playerDiscs[
-              (droppedPlayer as Player) ??
-                (active!.data?.current?.player as Player)
-            ]
-          }
+          {renderDisc()}
         </span>
       )}
     </div>

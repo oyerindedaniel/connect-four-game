@@ -1,9 +1,12 @@
+import { DEFAULT_COLUMNS, DEFAULT_ROWS } from "@/config";
+import { getMaxDiscsPerPlayer } from "@/utils/game";
 import {
   DragEndEvent,
   DragMoveEvent,
   DragStartEvent,
   UniqueIdentifier,
 } from "@dnd-kit/core";
+import { Player } from "../game/types";
 import { DragAction, DragActions } from "./actions";
 
 export interface DragData {
@@ -18,6 +21,7 @@ export interface DragData {
 export interface DragState {
   currentDrag: DragData;
   drags: Map<UniqueIdentifier, DragData>;
+  discsByPlayer: Record<Player, number>;
 }
 
 export const initialDragState: DragState = {
@@ -29,7 +33,13 @@ export const initialDragState: DragState = {
     isDragging: false,
     lastAction: null,
   },
+
   drags: new Map(),
+  discsByPlayer: {
+    player1: 1,
+    player2: 1,
+    computer: 1,
+  },
 };
 
 export const dragReducer = (
@@ -72,19 +82,31 @@ export const dragReducer = (
       };
 
     case DragAction.DragEnd:
-      const { over } = action.payload;
+      const { over, active } = action.payload;
 
       const dragData = {
         ...state.currentDrag,
         over,
         isDragging: false,
         collisions: action.payload.collisions,
-        delta: { x: 0, y: 0 },
         lastAction: DragAction.DragEnd,
       };
 
-      if (over?.id) {
-        state.drags.set(over.id, dragData);
+      if (over?.id && active?.data?.current?.player) {
+        const player = active.data.current.player as Player;
+
+        return {
+          ...state,
+          currentDrag: dragData,
+          drags: new Map(state.drags).set(over.id, dragData),
+          discsByPlayer: {
+            ...state.discsByPlayer,
+            [player]: Math.min(
+              state.discsByPlayer[player] + 1,
+              getMaxDiscsPerPlayer(DEFAULT_COLUMNS, DEFAULT_ROWS) // REFACT: move to game context
+            ),
+          },
+        };
       }
 
       return {

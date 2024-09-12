@@ -1,10 +1,10 @@
 import { CounterRedLargeSVG, CounterYellowLargeSVG } from "@/assets";
 import { DragAction } from "@/store/drag/actions";
 import { useDragContext } from "@/store/drag/context";
-import { useGameContext } from "@/store/game/context";
 import { Player } from "@/store/game/types";
 import { useDraggable } from "@dnd-kit/core";
 import { CSS } from "@dnd-kit/utilities";
+import { useMemo } from "react";
 
 interface DiscProps {
   id: number;
@@ -26,19 +26,15 @@ const Disc: React.FC<DiscProps> = ({ player, id, disabled }) => {
   });
 
   const {
-    state: { currentPlayer },
-    onDropDisc,
-  } = useGameContext();
-
-  const {
     state: {
       currentDrag: { over, lastAction, active },
     },
   } = useDragContext();
 
-  const style = {
-    transform: CSS.Translate.toString(transform),
-  };
+  const style = useMemo(
+    () => ({ transform: CSS.Translate.toString(transform) }),
+    [transform]
+  );
 
   const isDragEnd = lastAction === DragAction.DragEnd;
   const isActiveDisc = `${player}-${id}` === active?.id;

@@ -39,12 +39,10 @@ export default function DndContextProvider({ children }: PropsWithChildren) {
 
     const { over } = dragEnd;
 
-    console.log(dragEnd);
-
     if (over) {
       const droppedColumn = +over?.data?.current?.columnIdx;
       if (Number.isInteger(droppedColumn)) {
-        const value = onDropDisc(droppedColumn);
+        onDropDisc(droppedColumn);
       }
     }
   }
