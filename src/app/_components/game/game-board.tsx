@@ -27,7 +27,7 @@ const GameBoard: React.FC = () => {
       <div className="relative">
         <div className="flex w-[94.6%] h-[75px] -top-[75px] gap-x-[3.01%] absolute left-2/4 -translate-x-2/4">
           {droppableIds.map((id, colIdx) => (
-            <GameDroppable key={id} id={id} disabled={isColumnFull(colIdx)} />
+            <GameDroppable key={id} id={id} columnIdx={colIdx} disabled={isColumnFull(colIdx)} />
           ))}
         </div>
         <BoardLayerWhiteLargeSVG className="z-10" />

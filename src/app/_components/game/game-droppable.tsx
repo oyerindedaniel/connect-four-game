@@ -8,17 +8,19 @@ import { playerDiscs } from "./disc";
 interface GameDroppableProps {
   id: number;
   disabled: boolean;
+  columnIdx: number;
 }
 
 const GameDroppable: React.FC<GameDroppableProps> = ({
   id,
+  columnIdx,
   disabled = false,
 }) => {
   const droppableId = `droppable-${id}`;
 
   const { setNodeRef } = useDroppable({
     id: droppableId,
-    data: { id, columnIdx: id - 1 },
+    data: { id, columnIdx },
     disabled,
   });
 

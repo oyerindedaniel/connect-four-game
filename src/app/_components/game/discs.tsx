@@ -1,3 +1,5 @@
+"use client";
+
 import { DEFAULT_COLUMNS, DEFAULT_ROWS } from "@/config";
 import { useDragContext } from "@/store/drag/context";
 import { useGameContext } from "@/store/game/context";

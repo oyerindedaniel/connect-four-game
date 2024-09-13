@@ -1,3 +1,5 @@
+"use client";
+
 import { CounterRedLargeSVG, CounterYellowLargeSVG } from "@/assets";
 import { DragAction } from "@/store/drag/actions";
 import { useDragContext } from "@/store/drag/context";
