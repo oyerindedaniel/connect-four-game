@@ -1,6 +1,7 @@
 import { CounterRedLargeSVG, CounterYellowLargeSVG } from "@/assets";
 import { DragAction } from "@/store/drag/actions";
 import { useDragContext } from "@/store/drag/context";
+import { AnimatePresence, motion } from "framer-motion";
 import { Player } from "@/store/game/types";
 import { useDraggable } from "@dnd-kit/core";
 import { CSS } from "@dnd-kit/utilities";
@@ -49,7 +50,7 @@ const Disc: React.FC<DiscProps> = ({ player, id, disabled }) => {
     <span
       className="absolute"
       ref={setNodeRef}
-      style={style}
+      style={{ ...style }}
       {...listeners}
       {...attributes}
     >

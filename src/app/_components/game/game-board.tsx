@@ -3,54 +3,38 @@
 import { BoardLayerWhiteLargeSVG } from "@/assets";
 import SvgWrapper from "@/components/svg-wrapper";
 import { DEFAULT_COLUMNS } from "@/config";
-import { useNodeRef } from "@/hooks/utils";
-import { useCallback, useState } from "react";
+import { useGameContext } from "@/store/game/context";
 import GameDroppable from "./game-droppable";
+import GameGrid from "./game-grid";
 
 const GameBoard: React.FC = () => {
-  const [boardRect, setBoardRect] = useState<DOMRect | null>(null);
+  const { board } = useGameContext();
 
-  const handleNodeChange = useCallback(
-    (newElement: HTMLElement | null, previousElement: HTMLElement | null) => {
-      if (previousElement) {
-        setBoardRect(null);
-      }
-
-      if (newElement) {
-        const rect = newElement.getBoundingClientRect();
-        // console.log(rect);
-        setBoardRect(rect);
-      }
-    },
-    []
-  );
-
-  const [node, setNodeRef] = useNodeRef(handleNodeChange);
-
-  // Ids represent the board column number 1,2,3...
+  // droppable Ids not columnIdx
   const droppableIds = Array.from(
     { length: DEFAULT_COLUMNS },
-    (_, index) => index + 1
+    (_, colIdx) => colIdx + 1
   );
 
+  //REFACT
+  //O(n)
+  function isColumnFull(colIdx: number): boolean {
+    return board.every((row) => row[colIdx] !== 0);
+  }
+
   return (
-    <div className="">
-      <SvgWrapper
-        className="left-2/4 top-2/4 -translate-x-2/4 -translate-y-2/4"
-        beforeContentClass="before:content-board-layer-black-large"
-      >
-        <div ref={setNodeRef} className="relative">
-          {boardRect && (
-            <div className="flex w-full absolute -top-[90.28px]">
-              {droppableIds.map((id) => (
-                <GameDroppable key={id} id={id} />
-              ))}
-            </div>
-          )}
-          <BoardLayerWhiteLargeSVG className="z-10" />
+    <SvgWrapper beforeContentClass="before:content-board-layer-black-large">
+      <div className="relative">
+        <div className="flex w-[94.6%] h-[75px] -top-[75px] gap-x-[3.01%] absolute left-2/4 -translate-x-2/4">
+          {droppableIds.map((id, colIdx) => (
+            <GameDroppable key={id} id={id} disabled={isColumnFull(colIdx)} />
+          ))}
         </div>
-      </SvgWrapper>
-    </div>
+        <BoardLayerWhiteLargeSVG className="z-10" />
+        {/* <div className="bg-amber-800/15 w-20 h-[70px] absolute top-[18px]" /> */}
+        <GameGrid />
+      </div>
+    </SvgWrapper>
   );
 };
 

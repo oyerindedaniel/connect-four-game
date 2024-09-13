@@ -6,12 +6,17 @@ export const defaultInitialState: GameStateType = {
   currentPlayer: "player1",
   lastWinner: null,
   playerScores: [0, 0],
+  playerMap: { 1: "player1", 2: "player2" },
   gameStatus: GameState.NotStarted,
 };
 
 export const defaultGameContext: GameContextType = {
   state: defaultInitialState,
-  resetGame: noop,
+  board: [[]],
+  restartGame: noop,
+  onDropDisc: (args) => false,
+  pauseGame: noop,
+  continueGame: noop,
   startGame: noop,
   nextTurn: noop,
   setWinner: noop,

@@ -1,4 +1,5 @@
 import { LOCAL_STORAGE_NAME } from "@/config";
+import { getPlayerMap } from "@/utils/game";
 import { isWindowDefined } from "@/utils/other";
 import { GameAction, GameActions } from "./actions";
 import { defaultInitialState } from "./constants";
@@ -21,10 +22,12 @@ export const gameReducer = (
 ): GameStateType => {
   switch (action.type) {
     case GameAction.StartGame:
+      const gameMode = action.payload;
       return {
         ...state,
-        gameMode: action.payload,
+        gameMode,
         gameStatus: GameState.InProgress,
+        playerMap: getPlayerMap(gameMode),
         currentPlayer: "player1", // Player 1 starts by default
       };
 

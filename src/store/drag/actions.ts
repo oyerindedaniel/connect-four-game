@@ -1,10 +1,4 @@
-import {
-  DragCancelEvent,
-  DragEndEvent,
-  DragMoveEvent,
-  DragOverEvent,
-  DragStartEvent,
-} from "@dnd-kit/core";
+import { type DragEvent } from "./reducer";
 
 export enum DragAction {
   DragStart = "DragStart",
@@ -12,11 +6,13 @@ export enum DragAction {
   DragEnd = "DragEnd",
   DragCancel = "DragCancel",
   DragOver = "DragOver",
+  DragRemove = "DragRemove",
 }
 
 export type DragActions =
-  | { type: DragAction.DragStart; payload: DragStartEvent }
-  | { type: DragAction.DragMove; payload: DragMoveEvent }
-  | { type: DragAction.DragEnd; payload: DragEndEvent }
-  | { type: DragAction.DragCancel; payload: DragCancelEvent }
-  | { type: DragAction.DragOver; payload: DragOverEvent };
+  | { type: DragAction.DragStart; payload: Pick<DragEvent, "active"> }
+  | { type: DragAction.DragMove; payload: DragEvent }
+  | { type: DragAction.DragEnd; payload: DragEvent }
+  | { type: DragAction.DragCancel; payload: DragEvent }
+  | { type: DragAction.DragOver; payload: DragEvent }
+  | { type: DragAction.DragRemove; payload: Pick<DragEvent, "over"> };

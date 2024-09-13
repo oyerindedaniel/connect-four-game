@@ -17,12 +17,12 @@ const SvgWrapper: React.FC<SvgWrapperProps> = ({
   return (
     <div
       className={classNames(
-        "absolute",
+        "relative",
         className,
         beforeContentClass &&
-          `before:absolute before:inset-0 before:w-full before:h-full before:z-[-1] ${beforeContentClass}`,
+          `before:absolute before:inset-0 before:w-full before:h-full before:z-[-2] ${beforeContentClass}`,
         afterContentClass &&
-          `after:absolute after:inset-0 after:w-full after:h-full after:z-[-1] ${afterContentClass}`
+          `after:absolute after:inset-0 after:w-full after:h-full after:z-[-2] ${afterContentClass}`
       )}
     >
       {children}

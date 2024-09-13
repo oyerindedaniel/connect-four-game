@@ -16,6 +16,7 @@ interface GameOptions {
 export interface CallbackOptions {
   nextTurnCallback: (nextPlayer: Player) => void;
   setWinnerCallback: (winner: Player) => void;
+  setBoardCallback: (board: number[][]) => void;
   endGameCallback: () => void;
 }
 
@@ -40,6 +41,7 @@ class Connect4Game implements IConnect4Game {
   private nextTurnCallback: CallbackOptions["nextTurnCallback"];
   private setWinnerCallback: CallbackOptions["setWinnerCallback"];
   private endGameCallback: CallbackOptions["endGameCallback"];
+  private setBoardCallback: CallbackOptions["setBoardCallback"];
 
   constructor(gameOptions: GameOptions = {}, callbacks: CallbackOptions) {
     const {
@@ -60,6 +62,7 @@ class Connect4Game implements IConnect4Game {
     this.nextTurnCallback = callbacks.nextTurnCallback;
     this.setWinnerCallback = callbacks.setWinnerCallback;
     this.endGameCallback = callbacks.endGameCallback;
+    this.setBoardCallback = callbacks.setBoardCallback;
 
     this.initializeGame();
   }
@@ -75,6 +78,8 @@ class Connect4Game implements IConnect4Game {
     for (let row = this.rows - 1; row >= 0; row--) {
       if (this.board[row][column] === 0) {
         this.board[row][column] = this.currentPlayer;
+
+        this.setBoardCallback(this.board);
 
         const win = this.checkForWin();
         const boardFull = this.isBoardFull();

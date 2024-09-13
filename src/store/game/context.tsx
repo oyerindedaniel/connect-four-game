@@ -1,5 +1,6 @@
 "use client";
 
+import { DEFAULT_COLUMNS, DEFAULT_ROWS } from "@/config";
 import Connect4Game, { IConnect4Game } from "@/constructor/game";
 import { getPlayerMap } from "@/utils/game";
 import React, {
@@ -29,6 +30,9 @@ interface GameProviderProps extends PropsWithChildren {}
 
 export const GameProvider: React.FC<GameProviderProps> = ({ children }) => {
   const [state, dispatch] = useReducer(gameReducer, undefined, getInitialState);
+  const [board, setBoard] = useState<number[][]>(
+    Array.from({ length: DEFAULT_ROWS }, () => Array(DEFAULT_COLUMNS).fill(0))
+  );
   const [gameInstance, setGameInstance] = useState<IConnect4Game | null>(null);
 
   const useGameActions = useMemo(() => {
@@ -81,6 +85,9 @@ export const GameProvider: React.FC<GameProviderProps> = ({ children }) => {
           endGameCallback: () => {
             console.log("The game is over. It's a draw");
           },
+          setBoardCallback: (board: number[][]) => {
+            setBoard(board);
+          },
         }
       );
 
@@ -103,9 +110,10 @@ export const GameProvider: React.FC<GameProviderProps> = ({ children }) => {
   const contextValue = useMemo(
     () => ({
       state,
+      board,
       ...useGameActions,
     }),
-    [state, useGameActions]
+    [board, state, useGameActions]
   );
 
   return (

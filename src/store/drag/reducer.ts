@@ -1,19 +1,28 @@
 import { DEFAULT_COLUMNS, DEFAULT_ROWS } from "@/config";
 import { getMaxDiscsPerPlayer } from "@/utils/game";
 import {
-  DragEndEvent,
-  DragMoveEvent,
-  DragStartEvent,
+  Active,
+  Collision,
+  Over,
+  Translate,
   UniqueIdentifier,
 } from "@dnd-kit/core";
 import { Player } from "../game/types";
 import { DragAction, DragActions } from "./actions";
 
+export interface DragEvent {
+  activatorEvent: Event;
+  active: Active;
+  collisions: Collision[] | null;
+  delta: Translate;
+  over: Over | null;
+}
+
 export interface DragData {
-  active: DragStartEvent["active"] | null;
-  over: DragEndEvent["over"] | null;
-  collisions: DragMoveEvent["collisions"] | null;
-  delta: DragMoveEvent["delta"] | { x: 0; y: 0 };
+  active: DragEvent["active"] | null;
+  over: DragEvent["over"] | null;
+  collisions: DragEvent["collisions"] | null;
+  delta: DragEvent["delta"] | { x: number; y: number };
   isDragging: boolean;
   lastAction: DragAction | null;
 }
@@ -33,12 +42,11 @@ export const initialDragState: DragState = {
     isDragging: false,
     lastAction: null,
   },
-
   drags: new Map(),
   discsByPlayer: {
-    player1: 1,
-    player2: 1,
-    computer: 1,
+    player1: 0,
+    player2: 0,
+    computer: 0,
   },
 };
 
@@ -112,6 +120,20 @@ export const dragReducer = (
       return {
         ...state,
         currentDrag: dragData,
+      };
+
+    case DragAction.DragRemove:
+      const { over: removeOver } = action.payload;
+
+      const updatedDrags = new Map(state.drags);
+
+      if (removeOver?.id) {
+        updatedDrags.delete(removeOver.id);
+      }
+
+      return {
+        ...state,
+        drags: updatedDrags,
       };
 
     case DragAction.DragCancel:

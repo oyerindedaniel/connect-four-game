@@ -30,13 +30,14 @@ const PlayerInfo: React.FC<PlayerInfoProps> = ({
   return (
     <div
       className={classNames(
-        "absolute top-2/4 -translate-y-2/4 shadow-[0_10px_0_rgba(0,0,0,1)] text-center w-[141px] h-[160px] rounded-[20px] text-black bg-white border-[3px] border-black",
+        "relative shadow-[0_10px_0_rgba(0,0,0,1)] text-center w-[141px] h-[160px] rounded-[20px] text-black bg-white border-[3px] border-black",
         className
       )}
     >
-      <span className="absolute top-0 -translate-y-2/4 left-2/4 -translate-x-2/4 z-50">
+      <span className="absolute top-0 -translate-y-2/4 left-2/4 -translate-x-2/4">
         {playerAssets[player]}
       </span>
+
       <div className="flex flex-col justify-center items-center absolute top-[46px] w-max left-2/4 -translate-x-2/4">
         <span className="text-xl uppercase font-bold">
           {playerNames[player]}

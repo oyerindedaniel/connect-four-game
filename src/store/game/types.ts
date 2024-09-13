@@ -1,4 +1,4 @@
-import { CallbackOptions, IConnect4Game } from "@/constructor/game";
+import { CallbackOptions, IConnect4Game, PlayerMap } from "@/constructor/game";
 
 export enum GameState {
   NotStarted = "NotStarted",
@@ -21,10 +21,12 @@ export type GameStateType = {
   playerScores: number[];
   lastWinner: Player | null;
   gameStatus: GameState;
+  playerMap: PlayerMap;
 };
 
 export interface GameContextType {
   state: GameStateType;
+  board: number[][];
   startGame: (mode: GameMode) => void;
   nextTurn: CallbackOptions["nextTurnCallback"];
   setWinner: CallbackOptions["setWinnerCallback"];
