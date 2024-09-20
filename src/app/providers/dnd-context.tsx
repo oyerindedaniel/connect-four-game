@@ -3,6 +3,7 @@
 import { DragAction } from "@/store/drag/actions";
 import { useDragContext } from "@/store/drag/context";
 import { useGameContext } from "@/store/game/context";
+import { Player } from "@/store/game/types";
 import {
   DndContext,
   DragCancelEvent,
@@ -18,7 +19,7 @@ import { PropsWithChildren } from "react";
 
 export default function DndContextProvider({ children }: PropsWithChildren) {
   const { dispatch } = useDragContext();
-  const { onDropDisc } = useGameContext();
+  const { onDropDisc, updateDiscCount } = useGameContext();
 
   function handleDragStart(dragStart: DragStartEvent) {
     dispatch({ type: DragAction.DragStart, payload: dragStart });
@@ -34,15 +35,21 @@ export default function DndContextProvider({ children }: PropsWithChildren) {
   }
 
   function handleDragEnd(dragEnd: DragEndEvent) {
-    // console.log("Drag End:", dragEnd);
+    // Dispatch the DragEnd action
     dispatch({ type: DragAction.DragEnd, payload: dragEnd });
 
-    const { over } = dragEnd;
+    const { over, active } = dragEnd;
 
     if (over) {
       const droppedColumn = +over?.data?.current?.columnIdx;
-      if (Number.isInteger(droppedColumn)) {
-        onDropDisc(droppedColumn);
+      if (Number.isInteger(droppedColumn) && droppedColumn >= 0) {
+        const dropSuccessful = onDropDisc(droppedColumn);
+
+        const activePlayer = active?.data?.current?.player as Player;
+
+        if (dropSuccessful && activePlayer) {
+          updateDiscCount(activePlayer);
+        }
       }
     }
   }

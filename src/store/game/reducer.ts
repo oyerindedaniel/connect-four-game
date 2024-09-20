@@ -1,5 +1,5 @@
-import { LOCAL_STORAGE_NAME } from "@/config";
-import { getPlayerMap } from "@/utils/game";
+import { DEFAULT_COLUMNS, DEFAULT_ROWS, LOCAL_STORAGE_NAME } from "@/config";
+import { getMaxDiscsPerPlayer, getPlayerMap } from "@/utils/game";
 import { isWindowDefined } from "@/utils/other";
 import { GameAction, GameActions } from "./actions";
 import { defaultInitialState } from "./constants";
@@ -40,16 +40,30 @@ export const gameReducer = (
     case GameAction.SetWinner:
       return {
         ...state,
+        playerScores: {
+          ...state.playerScores,
+          [action.payload]: (state.playerScores[action.payload] || 0) + 1,
+        },
         lastWinner: action.payload,
         gameStatus: GameState.GameOver,
+      };
+
+    case GameAction.ResetGame:
+      return {
+        ...state,
+        currentPlayer: action.payload.currentPlayer,
+        lastStartingPlayer: action.payload.lastStartingPlayer,
+        lastWinner: null,
+        gameStatus: GameState.InProgress,
+        discsByPlayer: defaultInitialState.discsByPlayer,
       };
 
     case GameAction.RestartGame:
       return {
         ...state,
         gameMode: state.gameMode,
-        currentPlayer: "player1",
-        playerScores: [0, 0],
+        currentPlayer: state.currentPlayer,
+        playerScores: defaultInitialState.playerScores,
         gameStatus: GameState.InProgress,
       };
 
@@ -70,6 +84,18 @@ export const gameReducer = (
         ...state,
         gameStatus: GameState.GameOver,
       };
+
+    case GameAction.UpdateDiscCount: {
+      const { player } = action.payload;
+      const maxDiscs = getMaxDiscsPerPlayer(DEFAULT_COLUMNS, DEFAULT_ROWS);
+      return {
+        ...state,
+        discsByPlayer: {
+          ...state.discsByPlayer,
+          [player]: Math.min(state.discsByPlayer[player] + 1, maxDiscs),
+        },
+      };
+    }
 
     default:
       return state;

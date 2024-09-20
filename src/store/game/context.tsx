@@ -2,7 +2,7 @@
 
 import { DEFAULT_COLUMNS, DEFAULT_ROWS } from "@/config";
 import Connect4Game, { IConnect4Game } from "@/constructor/game";
-import { getPlayerMap } from "@/utils/game";
+import { create2DArray, getPlayerMap } from "@/utils/game";
 import React, {
   createContext,
   PropsWithChildren,
@@ -30,12 +30,25 @@ interface GameProviderProps extends PropsWithChildren {}
 
 export const GameProvider: React.FC<GameProviderProps> = ({ children }) => {
   const [state, dispatch] = useReducer(gameReducer, undefined, getInitialState);
-  const [board, setBoard] = useState<number[][]>(
-    Array.from({ length: DEFAULT_ROWS }, () => Array(DEFAULT_COLUMNS).fill(0))
+  const [board, setBoard] = useState<number[][]>(() =>
+    create2DArray(DEFAULT_ROWS, DEFAULT_COLUMNS, 0)
   );
   const [gameInstance, setGameInstance] = useState<IConnect4Game | null>(null);
 
   const useGameActions = useMemo(() => {
+    const skipTurn = () => {
+      if (gameInstance) {
+        gameInstance.skipTurn();
+      }
+    };
+
+    const updateDiscCount = (player: Player) => {
+      dispatch({
+        type: GameAction.UpdateDiscCount,
+        payload: { player },
+      });
+    };
+
     const nextTurn = (nextPlayer: Player) => {
       dispatch({ type: GameAction.NextTurn, payload: nextPlayer });
     };
@@ -52,12 +65,29 @@ export const GameProvider: React.FC<GameProviderProps> = ({ children }) => {
       dispatch({ type: GameAction.RestartGame });
     };
 
+    const resetGame = () => {
+      if (gameInstance) {
+        gameInstance.reset();
+
+        const currentPlayer =
+          gameInstance.playerMap[gameInstance.currentPlayer];
+
+        dispatch({
+          type: GameAction.ResetGame,
+          payload: {
+            currentPlayer: currentPlayer,
+            lastStartingPlayer: currentPlayer,
+          },
+        });
+      }
+    };
+
     const pauseGame = () => {
       dispatch({ type: GameAction.PauseGame });
     };
 
     const continueGame = () => {
-      dispatch({ type: GameAction.RestartGame });
+      dispatch({ type: GameAction.ResumeGame });
     };
 
     const onDropDisc = (column: number) => {
@@ -80,10 +110,10 @@ export const GameProvider: React.FC<GameProviderProps> = ({ children }) => {
             nextTurn(nextPlayer);
           },
           setWinnerCallback: (winner) => {
-            console.log(`${winner} is the winner`);
+            setWinner(winner);
           },
           endGameCallback: () => {
-            console.log("The game is over. It's a draw");
+            endGame();
           },
           setBoardCallback: (board: number[][]) => {
             setBoard(board);
@@ -103,7 +133,10 @@ export const GameProvider: React.FC<GameProviderProps> = ({ children }) => {
       endGame,
       restartGame,
       pauseGame,
+      skipTurn,
+      resetGame,
       continueGame,
+      updateDiscCount,
     };
   }, [gameInstance, dispatch]);
 

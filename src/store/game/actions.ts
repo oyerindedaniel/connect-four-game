@@ -6,8 +6,10 @@ export enum GameAction {
   EndGame = "EndGame",
   SetWinner = "SetWinner",
   RestartGame = "RestartGame",
+  ResetGame = "ResetGame",
   PauseGame = "PauseGame",
   ResumeGame = "ResumeGame",
+  UpdateDiscCount = "UpdateDiscCount",
 }
 
 export type GameActions =
@@ -16,5 +18,10 @@ export type GameActions =
   | { type: GameAction.SetWinner; payload: Player }
   | { type: GameAction.EndGame }
   | { type: GameAction.RestartGame }
+  | {
+      type: GameAction.ResetGame;
+      payload: { currentPlayer: Player; lastStartingPlayer: Player };
+    }
   | { type: GameAction.PauseGame }
-  | { type: GameAction.ResumeGame };
+  | { type: GameAction.ResumeGame }
+  | { type: GameAction.UpdateDiscCount; payload: { player: Player } };

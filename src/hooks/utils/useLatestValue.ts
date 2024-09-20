@@ -3,7 +3,7 @@ import type { DependencyList } from "react";
 
 import { useIsomorphicLayoutEffect } from "./useIsomorphicLayoutEffect";
 
-export function useLatestValue<T extends any>(
+export function useLatestValue<T>(
   value: T,
   dependencies: DependencyList = [value]
 ) {

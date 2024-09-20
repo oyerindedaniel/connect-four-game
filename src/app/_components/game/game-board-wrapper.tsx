@@ -6,16 +6,25 @@ import PlayerInfoWrapper from "./player-info-wrapper";
 
 const GameBoardWrapper: React.FC = () => {
   const {
-    state: { currentPlayer, playerScores },
+    state: { playerScores, playerMap },
   } = useGameContext();
+
+  const firstGamePlayer = playerMap[1];
+  const otherGamePlayer = playerMap[2];
 
   return (
     <div className="flex justify-around items-center h-full">
-      <PlayerInfoWrapper player="player1" playerScore={playerScores[0]} />
+      <PlayerInfoWrapper
+        player={firstGamePlayer}
+        playerScore={playerScores[firstGamePlayer]}
+      />
 
       <GameBoard />
 
-      <PlayerInfoWrapper player="player2" playerScore={playerScores[1]} />
+      <PlayerInfoWrapper
+        player={otherGamePlayer}
+        playerScore={playerScores[otherGamePlayer]}
+      />
     </div>
   );
 };

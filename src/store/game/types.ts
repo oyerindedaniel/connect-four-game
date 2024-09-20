@@ -18,10 +18,12 @@ export type Player = "player1" | "player2" | "computer";
 export type GameStateType = {
   gameMode: GameMode | null;
   currentPlayer: Player;
-  playerScores: number[];
+  playerScores: Record<Player, number>;
   lastWinner: Player | null;
   gameStatus: GameState;
   playerMap: PlayerMap;
+  lastStartingPlayer: Player;
+  discsByPlayer: Record<Player, number>;
 };
 
 export interface GameContextType {
@@ -30,9 +32,12 @@ export interface GameContextType {
   startGame: (mode: GameMode) => void;
   nextTurn: CallbackOptions["nextTurnCallback"];
   setWinner: CallbackOptions["setWinnerCallback"];
+  skipTurn: () => void;
   restartGame: () => void;
+  resetGame: () => void;
   onDropDisc: IConnect4Game["dropDisc"];
   pauseGame: () => void;
   continueGame: () => void;
   endGame: CallbackOptions["endGameCallback"];
+  updateDiscCount: (player: Player) => void;
 }

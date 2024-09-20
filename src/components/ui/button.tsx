@@ -31,8 +31,8 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
       children,
       className,
       asChild = false,
-      shadowVariant = "shadow-[0_4px_4px_rgba(0,0,0,0.25)]",
-      borderVariant = "border-[3px] border-black",
+      shadowVariant,
+      borderVariant,
       hoverEffect = true,
       ...rest
     },

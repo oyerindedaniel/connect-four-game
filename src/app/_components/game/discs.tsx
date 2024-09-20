@@ -3,7 +3,7 @@
 import { DEFAULT_COLUMNS, DEFAULT_ROWS } from "@/config";
 import { useDragContext } from "@/store/drag/context";
 import { useGameContext } from "@/store/game/context";
-import { Player } from "@/store/game/types";
+import { GameState, Player } from "@/store/game/types";
 import { getMaxDiscsPerPlayer } from "@/utils/game";
 import { classNames } from "@/utils/other";
 import { AnimatePresence, motion } from "framer-motion";
@@ -16,18 +16,17 @@ interface DiscsProps {
 
 const Discs: React.FC<DiscsProps> = ({ player, className }) => {
   const {
-    state: { currentPlayer },
+    state: { currentPlayer, gameStatus, discsByPlayer },
   } = useGameContext();
 
-  const {
-    state: { discsByPlayer },
-  } = useDragContext();
-
-  //REFACT
-  const isDraggingDisabled =
-    currentPlayer !== player ||
+  const isMaxDiscsReached =
     discsByPlayer[player] ===
-      getMaxDiscsPerPlayer(DEFAULT_COLUMNS, DEFAULT_ROWS);
+    getMaxDiscsPerPlayer(DEFAULT_COLUMNS, DEFAULT_ROWS);
+  const isNotCurrentPlayer = currentPlayer !== player;
+  const isGameOver = gameStatus === GameState.GameOver;
+
+  const isDraggingDisabled =
+    isNotCurrentPlayer || isMaxDiscsReached || isGameOver;
 
   return (
     <AnimatePresence initial={false}>

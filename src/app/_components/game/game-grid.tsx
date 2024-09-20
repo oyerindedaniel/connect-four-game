@@ -64,9 +64,7 @@ const GameGrid: React.FC = () => {
                 >
                   {playerDiscs[playerMap[value as 1 | 2] as Player]}
                 </motion.div>
-              ) : (
-                "0"
-              )}
+              ) : null}
             </div>
           ))
         )}

@@ -17,6 +17,7 @@ import { ReactComponent as PlayerVsPlayerSVG } from "./player-vs-player.svg";
 import { ReactComponent as TurnBackgroundRedSVG } from "./turn-background-red.svg";
 import { ReactComponent as TurnBackgroundYellowSVG } from "./turn-background-yellow.svg";
 import { ReactComponent as YouSVG } from "./you.svg";
+import { ReactComponent as WinsSVG } from "./wins.svg";
 
 export {
   BoardLayerBlackLargeSVG,
@@ -38,4 +39,5 @@ export {
   TurnBackgroundRedSVG,
   TurnBackgroundYellowSVG,
   YouSVG,
+  WinsSVG,
 };

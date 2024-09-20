@@ -1,5 +1,3 @@
-import { DEFAULT_COLUMNS, DEFAULT_ROWS } from "@/config";
-import { getMaxDiscsPerPlayer } from "@/utils/game";
 import {
   Active,
   Collision,
@@ -7,7 +5,6 @@ import {
   Translate,
   UniqueIdentifier,
 } from "@dnd-kit/core";
-import { Player } from "../game/types";
 import { DragAction, DragActions } from "./actions";
 
 export interface DragEvent {
@@ -30,7 +27,6 @@ export interface DragData {
 export interface DragState {
   currentDrag: DragData;
   drags: Map<UniqueIdentifier, DragData>;
-  discsByPlayer: Record<Player, number>;
 }
 
 export const initialDragState: DragState = {
@@ -43,11 +39,6 @@ export const initialDragState: DragState = {
     lastAction: null,
   },
   drags: new Map(),
-  discsByPlayer: {
-    player1: 0,
-    player2: 0,
-    computer: 0,
-  },
 };
 
 export const dragReducer = (
@@ -100,26 +91,12 @@ export const dragReducer = (
         lastAction: DragAction.DragEnd,
       };
 
-      if (over?.id && active?.data?.current?.player) {
-        const player = active.data.current.player as Player;
-
-        return {
-          ...state,
-          currentDrag: dragData,
-          drags: new Map(state.drags).set(over.id, dragData),
-          discsByPlayer: {
-            ...state.discsByPlayer,
-            [player]: Math.min(
-              state.discsByPlayer[player] + 1,
-              getMaxDiscsPerPlayer(DEFAULT_COLUMNS, DEFAULT_ROWS) // REFACT: move to game context
-            ),
-          },
-        };
-      }
-
       return {
         ...state,
         currentDrag: dragData,
+        drags: over?.id
+          ? new Map(state.drags).set(over.id, dragData)
+          : state.drags,
       };
 
     case DragAction.DragRemove:

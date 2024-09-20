@@ -1,29 +1,45 @@
 "use client";
 
-import { TurnBackgroundYellowSVG } from "@/assets";
+import { DEFAULT_TIME } from "@/config";
+import { useGameContext } from "@/store/game/context";
 import { Player } from "@/store/game/types";
+import { classNames } from "@/utils/other";
+import { useEffect, useState } from "react";
 
 interface TimerProps {
-  timeLeft: number;
   currentPlayer: Player;
 }
 
-const playerNames = {
-  player1: "Player 1",
-  player2: "Player 2",
-  computer: "CPU",
-};
+const Timer: React.FC<TimerProps> = ({ currentPlayer }) => {
+  const { skipTurn } = useGameContext();
 
-const Timer: React.FC<TimerProps> = ({ timeLeft, currentPlayer }) => {
+  const [timeLeft, setTimeLeft] = useState(DEFAULT_TIME);
+
+  useEffect(() => {
+    if (timeLeft > 0) {
+      const interval = setInterval(() => {
+        setTimeLeft((prevTime) => prevTime - 1);
+      }, 1000);
+
+      return () => clearInterval(interval);
+    } else if (timeLeft === 0) {
+      skipTurn();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [timeLeft]);
+
+  useEffect(() => {
+    setTimeLeft(DEFAULT_TIME);
+  }, [currentPlayer]);
+
   return (
-    <div className="absolute bottom-[20px] left-2/4 -translate-x-2/4 text-black">
-      <TurnBackgroundYellowSVG />
-
-      <div className="flex flex-col items-center justify-center absolute left-2/4 -translate-x-2/4 w-max bottom-[28px]">
-        <span className="font-bold text-base uppercase">{`${playerNames[currentPlayer]}'S TURN`}</span>
-        <span className="font-bold text-[56px] h-[71px]">{timeLeft}s</span>
-      </div>
-    </div>
+    <span
+      className={classNames("font-bold text-[56px] h-[71px] text-black", {
+        "text-white": currentPlayer === "player1",
+      })}
+    >
+      {timeLeft}s
+    </span>
   );
 };
 
