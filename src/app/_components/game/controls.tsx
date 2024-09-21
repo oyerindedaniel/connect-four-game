@@ -11,7 +11,9 @@ const Controls: React.FC = () => {
     <div className="flex items-center justify-between max-w-[632px] absolute top-[53px] left-2/4 -translate-x-2/4 w-full">
       <Button className="uppercase">Menu</Button>
       <LogoSVG />
-      <Button className="uppercase">Restart</Button>
+      <Button className="uppercase" onClick={restartGame}>
+        Restart
+      </Button>
     </div>
   );
 };

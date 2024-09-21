@@ -46,6 +46,7 @@ export interface IConnect4Game {
   ): { hasWon: boolean; winningDiscs: Disc[] };
   isBoardFull(): boolean;
   printBoard(): void;
+  restart(): void;
   reset(): void;
 }
 
@@ -193,16 +194,20 @@ class Connect4Game implements IConnect4Game {
     return this.board[0].every((cell) => cell !== 0);
   }
 
-  reset(): void {
-    this.lastStartingPlayer = this.lastStartingPlayer === 1 ? 2 : 1;
-    this.currentPlayer = this.lastStartingPlayer;
+  restart(): void {
+    this.currentPlayer = 1;
+    this.lastStartingPlayer = this.currentPlayer;
 
-    // Reset the board
     this.board = create2DArray(this.rows, this.columns, 0);
     this.setBoardCallback(this.board);
+  }
 
-    // Notify that the game has been reset and the current player is updated
-    // this.nextTurnCallback(this.playerMap[this.currentPlayer]);
+  reset(): void {
+    this.currentPlayer = this.currentPlayer === 1 ? 2 : 1;
+    this.lastStartingPlayer = this.currentPlayer;
+
+    this.board = create2DArray(this.rows, this.columns, 0);
+    this.setBoardCallback(this.board);
   }
 
   printBoard(): void {

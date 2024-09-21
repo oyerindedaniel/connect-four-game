@@ -68,6 +68,10 @@ export const GameProvider: React.FC<GameProviderProps> = ({ children }) => {
     };
 
     const restartGame = () => {
+      if (gameInstance) {
+        gameInstance.restart();
+      }
+
       dispatch({ type: GameAction.RestartGame });
     };
 
