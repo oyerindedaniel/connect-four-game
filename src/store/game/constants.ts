@@ -4,6 +4,7 @@ import { GameContextType, GameState, GameStateType } from "./types";
 export const defaultInitialState: GameStateType = {
   gameMode: null,
   currentPlayer: "player1",
+  winningDiscs: [],
   lastWinner: null,
   playerScores: { player1: 0, player2: 0, computer: 0 },
   playerMap: { 1: "player1", 2: "player2" },

@@ -38,13 +38,16 @@ export const gameReducer = (
       };
 
     case GameAction.SetWinner:
+      const { player, discs } = action.payload;
+
       return {
         ...state,
         playerScores: {
           ...state.playerScores,
-          [action.payload]: (state.playerScores[action.payload] || 0) + 1,
+          [player]: (state.playerScores[player] || 0) + 1,
         },
-        lastWinner: action.payload,
+        lastWinner: player,
+        winningDiscs: discs,
         gameStatus: GameState.GameOver,
       };
 
@@ -54,6 +57,7 @@ export const gameReducer = (
         currentPlayer: action.payload.currentPlayer,
         lastStartingPlayer: action.payload.lastStartingPlayer,
         lastWinner: null,
+        winningDiscs: [],
         gameStatus: GameState.InProgress,
         discsByPlayer: defaultInitialState.discsByPlayer,
       };
@@ -61,10 +65,7 @@ export const gameReducer = (
     case GameAction.RestartGame:
       return {
         ...state,
-        gameMode: state.gameMode,
-        currentPlayer: state.currentPlayer,
-        playerScores: defaultInitialState.playerScores,
-        gameStatus: GameState.InProgress,
+        ...defaultInitialState,
       };
 
     case GameAction.PauseGame:

@@ -1,7 +1,6 @@
 "use client";
 
 import { DEFAULT_COLUMNS, DEFAULT_ROWS } from "@/config";
-import { useDragContext } from "@/store/drag/context";
 import { useGameContext } from "@/store/game/context";
 import { GameState, Player } from "@/store/game/types";
 import { getMaxDiscsPerPlayer } from "@/utils/game";
@@ -11,7 +10,7 @@ import Disc from "./disc";
 
 interface DiscsProps {
   player: Player;
-  className?: string;
+  className?: HTMLDivElement["className"];
 }
 
 const Discs: React.FC<DiscsProps> = ({ player, className }) => {

@@ -1,3 +1,4 @@
+import { Disc } from "@/constructor/game";
 import { GameMode, Player } from "./types";
 
 export enum GameAction {
@@ -15,7 +16,13 @@ export enum GameAction {
 export type GameActions =
   | { type: GameAction.StartGame; payload: GameMode }
   | { type: GameAction.NextTurn; payload: Player }
-  | { type: GameAction.SetWinner; payload: Player }
+  | {
+      type: GameAction.SetWinner;
+      payload: {
+        player: Player;
+        discs: Disc[];
+      };
+    }
   | { type: GameAction.EndGame }
   | { type: GameAction.RestartGame }
   | {

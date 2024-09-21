@@ -1,5 +1,6 @@
 "use client";
 
+import { WinCircleSVG } from "@/assets";
 import { DEFAULT_COLUMNS, DEFAULT_ROWS } from "@/config";
 import { DragAction } from "@/store/drag/actions";
 import { useDragContext } from "@/store/drag/context";
@@ -11,7 +12,7 @@ import { playerDiscs } from "./disc";
 const GameGrid: React.FC = () => {
   const {
     board,
-    state: { playerMap },
+    state: { playerMap, winningDiscs },
   } = useGameContext();
 
   const {
@@ -32,6 +33,9 @@ const GameGrid: React.FC = () => {
   const handleAnimationStart = () => {
     dispatch({ type: DragAction.DragRemove, payload: { over } });
   };
+
+  const isWinningDisc = (rowIdx: number, colIdx: number) =>
+    winningDiscs.some((disc) => disc.row === rowIdx && disc.col === colIdx);
 
   return (
     <div className="absolute inset-0">
@@ -63,6 +67,9 @@ const GameGrid: React.FC = () => {
                   onAnimationStart={() => handleAnimationStart()}
                 >
                   {playerDiscs[playerMap[value as 1 | 2] as Player]}
+                  {isWinningDisc(rowIdx, colIdx) && (
+                    <WinCircleSVG className="absolute left-2/4 top-2/4 -translate-x-2/4 -translate-y-2/4 fill-transparent" />
+                  )}
                 </motion.div>
               ) : null}
             </div>

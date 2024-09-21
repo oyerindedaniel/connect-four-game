@@ -35,7 +35,6 @@ export default function DndContextProvider({ children }: PropsWithChildren) {
   }
 
   function handleDragEnd(dragEnd: DragEndEvent) {
-    // Dispatch the DragEnd action
     dispatch({ type: DragAction.DragEnd, payload: dragEnd });
 
     const { over, active } = dragEnd;

@@ -1,4 +1,9 @@
-import { CallbackOptions, IConnect4Game, PlayerMap } from "@/constructor/game";
+import {
+  CallbackOptions,
+  Disc,
+  IConnect4Game,
+  PlayerMap,
+} from "@/constructor/game";
 
 export enum GameState {
   NotStarted = "NotStarted",
@@ -20,6 +25,7 @@ export type GameStateType = {
   currentPlayer: Player;
   playerScores: Record<Player, number>;
   lastWinner: Player | null;
+  winningDiscs: Disc[];
   gameStatus: GameState;
   playerMap: PlayerMap;
   lastStartingPlayer: Player;

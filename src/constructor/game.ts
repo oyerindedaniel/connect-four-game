@@ -16,9 +16,17 @@ interface GameOptions {
   playerMap?: PlayerMap;
 }
 
+export type Disc = { row: number; col: number };
+
 export interface CallbackOptions {
   nextTurnCallback: (nextPlayer: Player) => void;
-  setWinnerCallback: (winner: Player) => void;
+  setWinnerCallback: ({
+    player,
+    discs,
+  }: {
+    player: Player;
+    discs: Disc[];
+  }) => void;
   setBoardCallback: (board: number[][]) => void;
   endGameCallback: () => void;
 }
@@ -32,7 +40,10 @@ export interface IConnect4Game {
   initializeGame(): void;
   dropDisc(column: number): boolean;
   skipTurn(): void;
-  checkForWin(row: number, column: number): boolean;
+  checkForWin(
+    row: number,
+    column: number
+  ): { hasWon: boolean; winningDiscs: Disc[] };
   isBoardFull(): boolean;
   printBoard(): void;
   reset(): void;
@@ -92,14 +103,17 @@ class Connect4Game implements IConnect4Game {
 
         this.setBoardCallback(this.board);
 
-        const win = this.checkForWin(row, column);
+        const { hasWon, winningDiscs } = this.checkForWin(row, column);
 
-        const boardFull = this.isBoardFull();
-
-        if (win) {
-          this.setWinnerCallback(this.playerMap[this.currentPlayer]);
+        if (hasWon) {
+          this.setWinnerCallback({
+            player: this.playerMap[this.currentPlayer],
+            discs: winningDiscs,
+          });
           return true;
         }
+
+        const boardFull = this.isBoardFull();
 
         if (boardFull) {
           this.endGameCallback();
@@ -114,62 +128,60 @@ class Connect4Game implements IConnect4Game {
       }
     }
 
-    return false; // Column is full, cannot place disc
+    return false;
   }
 
-  checkForWin(row: number, column: number): boolean {
+  checkForWin(
+    row: number,
+    column: number
+  ): { hasWon: boolean; winningDiscs: { row: number; col: number }[] } {
     const player = this.currentPlayer;
     const directions = [
-      { dx: 1, dy: 0 }, // Horizontal right
-      { dx: 0, dy: 1 }, // Vertical down
-      { dx: 1, dy: 1 }, // Diagonal down-right
-      { dx: 1, dy: -1 }, // Diagonal up-right
+      { dx: 1, dy: 0 },
+      { dx: 0, dy: 1 },
+      { dx: 1, dy: 1 },
+      { dx: 1, dy: -1 },
     ];
 
     const inBounds = (r: number, c: number): boolean =>
       r >= 0 && r < this.rows && c >= 0 && c < this.columns;
 
-    const countConsecutiveDiscs = (
+    const getConsecutiveDiscs = (
       row: number,
       col: number,
       dx: number,
       dy: number
-    ): number => {
-      let count = 1;
+    ): { row: number; col: number }[] => {
+      const consecutiveDiscs = [{ row, col }];
 
-      // Check in the (dx, dy) direction
-      for (let i = 1; i < 4; i++) {
-        const newRow = row + i * dy;
-        const newCol = col + i * dx;
-        if (inBounds(newRow, newCol) && this.board[newRow][newCol] === player) {
-          count++;
-        } else {
-          break;
+      // -1 backward // 1 forward
+      for (const direction of [-1, 1]) {
+        for (let i = 1; i < 4; i++) {
+          const newRow = row + i * dy * direction;
+          const newCol = col + i * dx * direction;
+          if (
+            inBounds(newRow, newCol) &&
+            this.board[newRow][newCol] === player
+          ) {
+            consecutiveDiscs.push({ row: newRow, col: newCol });
+            if (consecutiveDiscs.length === 4) return consecutiveDiscs;
+          } else {
+            break;
+          }
         }
       }
 
-      // Check in the (-dx, -dy) direction (opposite direction)
-      for (let i = 1; i < 4; i++) {
-        const newRow = row - i * dy;
-        const newCol = col - i * dx;
-        if (inBounds(newRow, newCol) && this.board[newRow][newCol] === player) {
-          count++;
-        } else {
-          break;
-        }
-      }
-
-      return count;
+      return consecutiveDiscs.length === 4 ? consecutiveDiscs : [];
     };
 
-    // Check all directions starting from the last dropped disc
     for (const { dx, dy } of directions) {
-      if (countConsecutiveDiscs(row, column, dx, dy) >= 4) {
-        return true; // Winning condition met
+      const discs = getConsecutiveDiscs(row, column, dx, dy);
+      if (discs.length === 4) {
+        return { hasWon: true, winningDiscs: discs };
       }
     }
 
-    return false; // No win found
+    return { hasWon: false, winningDiscs: [] };
   }
 
   skipTurn(): void {

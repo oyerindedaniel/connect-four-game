@@ -1,7 +1,7 @@
 "use client";
 
 import { DEFAULT_COLUMNS, DEFAULT_ROWS } from "@/config";
-import Connect4Game, { IConnect4Game } from "@/constructor/game";
+import Connect4Game, { Disc, IConnect4Game } from "@/constructor/game";
 import { create2DArray, getPlayerMap } from "@/utils/game";
 import React, {
   createContext,
@@ -53,8 +53,14 @@ export const GameProvider: React.FC<GameProviderProps> = ({ children }) => {
       dispatch({ type: GameAction.NextTurn, payload: nextPlayer });
     };
 
-    const setWinner = (winner: Player) => {
-      dispatch({ type: GameAction.SetWinner, payload: winner });
+    const setWinner = ({
+      player,
+      discs,
+    }: {
+      player: Player;
+      discs: Disc[];
+    }) => {
+      dispatch({ type: GameAction.SetWinner, payload: { player, discs } });
     };
 
     const endGame = () => {
